@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Mini-X | Home{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<a href="{% url 'crear_post' %}" class="btn btn-primary">+ Crear Post</a>
+{% endif %}
+
+{% for post in posts %}
+    <div style="border-bottom:1px solid #ccc; padding:10px;">
+        <a href="{% url 'detalle_post' post.pk %}">
+            <p><strong>@{{ post.usuario.username }}</strong></p>
+            <p>{{ post.contenido }}</p>
+            <p>{{ post.created_at|date:"H:i d/m/Y" }}</p>
+        </a>
+        <form action="{% url 'like_post' post.pk %}" method="post">
+            {% csrf_token %}
+            <button class="btn btn-light btn-sm" type="submit">
+                ❤️ {{ post.total_likes }}
+            </button>
+        </form>
+    </div>
+{% endfor %}
+
+{% endblock %}

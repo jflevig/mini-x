@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Mini-X | Detalle Post{% endblock %}
+
+{% block content %}
+<h1>Detalle del Post</h1>
+<div style="border-bottom:1px solid #ccc; padding:10px;">
+    <p><strong>@{{ post.usuario.username }}</strong></p>
+    <p>{{ post.contenido }}</p>
+    <p>{{ post.created_at|date:"H:i d/m/Y" }}</p>
+
+    <form action="{% url 'like_post' post.pk %}" method="post">
+        {% csrf_token %}
+        <button class="btn btn-light btn-sm" type="submit">
+            ❤️ {{ object.total_likes }}
+        </button>
+    </form>
+</div>
+
+{% if user.is_authenticated and user == post.usuario %}
+    <a href="{% url 'editar_post' post.pk %}">Editar</a>
+    <a href="{% url 'eliminar_post' post.pk %}">Eliminar</a>
+{% endif %}
+{% endblock %}

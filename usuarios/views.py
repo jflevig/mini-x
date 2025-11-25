@@ -1,0 +1,32 @@
+from django.shortcuts import render, redirect
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse_lazy
+
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST["username"]
+        password = request.POST["password"]
+
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect(reverse_lazy('home'))
+        return render(request, 'login.html', {'error_message': 'Invalid username or password.'})
+    else:
+        return render(request, 'login.html')
+
+def logout_view(request):
+    logout(request)
+    return redirect(reverse_lazy('login'))
+
+def registro(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse_lazy('login'))
+    else:
+        form = UserCreationForm()
+    
+    return render(request, 'registro.html', {'form': form})

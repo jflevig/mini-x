@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Iniciar Sesión{% endblock %}
+
+{% block content %}
+<h2 class="mb-3">Inicio de Sesión</h2>
+<div style="width: 500px;">
+<form method="POST" novalidate>
+    {% csrf_token %}
+    {% if error_message %}
+    <div class="alert alert-danger" role="alert">
+    {{ error_message }}
+    </div>
+    {% endif %}
+    <div>
+    <label for="username" class="form-label">Nombre de Usuario</label>
+    <input type="text" id="username" name="username" class="form-control">
+    </div>
+    <div>
+    <label for="password" class="form-label">Contraseña</label>
+    <input type="password" name="password" id="password" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Iniciar Sesión</button>
+</form>
+</div>
+{% endblock %}
