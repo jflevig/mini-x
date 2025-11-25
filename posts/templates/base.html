@@ -28,9 +28,11 @@
                             Inicio
                         </a>
                     </li>
-                    <span class="navbar-text mx-2">
-                    Bienvenido, <strong>{{ user.username }}</strong>
-                    </span>
+                    <li class="nav-item">
+                        <a href="{% url 'perfil' user.pk %}" class="nav-link">
+                            Bienvenid@, <strong>{{ user.username }}</strong>
+                        </a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link text-danger" href="{% url 'logout' %}">Cerrar Sesión</a>
                     </li>

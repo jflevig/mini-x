@@ -4,7 +4,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Post(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(User, related_name='posts', on_delete=models.CASCADE)
     contenido = models.TextField(max_length=250)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

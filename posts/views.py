@@ -56,7 +56,7 @@ class PostDetailView(DetailView):
     context_object_name = 'post'
 
 @login_required
-def like_post(request, post_id):
+def like_post_home(request, post_id):
     post = Post.objects.get(id=post_id)
 
     if request.user in post.likes.all():
@@ -65,3 +65,25 @@ def like_post(request, post_id):
         post.likes.add(request.user)
 
     return redirect('home')
+
+@login_required
+def like_post_detalle(request, post_id):
+    post = Post.objects.get(id=post_id)
+
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+
+    return redirect(reverse_lazy('detalle_post', kwargs={'pk': post.id}))
+
+@login_required
+def like_post_perfil(request, post_id):
+    post = Post.objects.get(id=post_id)
+
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+
+    return redirect(reverse_lazy('perfil', kwargs={'pk': post.usuario.pk}))

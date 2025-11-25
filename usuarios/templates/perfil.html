@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Perfil de {{ perfil.usuario.username }}{% endblock %}
+
+{% block content %}
+  <h2>Perfil de {{ perfil.usuario.username }}</h2>
+  <p>Email: {{ perfil.usuario.email }}</p>
+  <p>Biografía: {{ perfil.biografia }}</p>
+  {% if user == perfil.usuario %}
+    <a href="{% url 'editar_perfil' %}">Editar perfil</a>
+  {% endif %}
+  <h3>Publicaciones</h3>
+  {% for post in posts %}
+    <div style="border-bottom:1px solid #ccc; padding:10px;">
+        <p><a href="{% url 'perfil' post.usuario.pk %}"><strong>@{{ post.usuario.username }}</strong></a></p>
+        <a href="{% url 'detalle_post' post.pk %}">
+            <p>{{ post.contenido }}</p>
+            <p>{{ post.created_at|date:"H:i d/m/Y" }}</p>
+        </a>
+        <form action="{% url 'like_post_perfil' post.pk %}" method="post">
+            {% csrf_token %}
+            <button class="btn btn-light btn-sm" type="submit">
+                ❤️ {{ post.total_likes }}
+            </button>
+        </form>
+    </div>
+  {% endfor %}
+{% endblock %}

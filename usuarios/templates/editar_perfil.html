@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %} Editar Perfil de {{ perfil.usuario.username }}{% endblock %}
+
+{% block content %}
+    <h2>Editar Perfil de {{ perfil.usuario.username }}</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" value="{{ perfil.usuario.email }}"><br><br>
+        <label for="biografia">Biografía:</label><br>
+        <textarea id="biografia" name="biografia" rows="4" cols="50">{{ perfil.biografia }}</textarea><br><br>
+        <input type="submit" value="Guardar Cambios">
+        <a href="{% url 'perfil' perfil.usuario.pk %}">Cancelar</a>
+    </form>
+{% endblock %}
