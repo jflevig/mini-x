@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView ,CreateView, UpdateView, DeleteView, DetailView
-from .models import Post
-from .forms import PostForm
+from .models import Post, Comentario
+from .forms import PostForm, ComentarioForm
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
@@ -54,6 +54,26 @@ class PostDetailView(DetailView):
     model = Post
     template_name = 'posts_detalle.html'
     context_object_name = 'post'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comentarios'] = Comentario.objects.filter(post=self.object).order_by('-created_at')
+        context['form'] = ComentarioForm()
+        return context
+    
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = ComentarioForm(request.POST)
+        if form.is_valid():
+            comentario = form.save(commit=False)
+            comentario.usuario = request.user
+            comentario.post = self.object
+            comentario.save()
+            return redirect('detalle_post', pk=self.object.pk)
+        context = self.get_context_data()
+        context['form'] = form
+        return self.render_to_response(context)
+
 
 @login_required
 def like_post_home(request, post_id):

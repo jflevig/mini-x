@@ -21,10 +21,16 @@
                 <button class="btn btn-primary btn-sm" type="submit">
                     ❤️ {{ post.total_likes }}
                 </button>
+                <a href="{% url 'detalle_post' post.pk %}" class="btn btn-light btn-sm">
+                    💬 {{ post.total_comentarios }}
+                </a>
             {% else %}
                 <button class="btn btn-light btn-sm" type="submit">
                     ❤️ {{ post.total_likes }}
                 </button>
+                <a href="{% url 'detalle_post' post.pk %}" class="btn btn-light btn-sm">
+                    💬 {{ post.total_comentarios }}
+                </a>
             {% endif %}
         </form>
     </div>
