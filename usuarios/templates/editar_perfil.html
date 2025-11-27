@@ -1,18 +1,24 @@
 {% extends "base.html" %}
 
-{% block title %} Editar Perfil de {{ perfil.usuario.username }}{% endblock %}
+{% block title %} Editar Perfil{% endblock %}
 
 {% block content %}
     <h2>Editar Perfil de {{ perfil.usuario.username }}</h2>
     <form method="POST">
         {% csrf_token %}
-        <label for="nombre">Nombre:</label><br>
-        <input type="text" id="nombre" name="nombre" value="{{ perfil.nombre }}"><br><br>
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" value="{{ perfil.usuario.email }}"><br><br>
-        <label for="biografia">Biografía:</label><br>
-        <textarea id="biografia" name="biografia" rows="4" cols="50">{{ perfil.biografia }}</textarea><br><br>
-        <input type="submit" value="Guardar Cambios">
-        <a href="{% url 'perfil' perfil.usuario.pk %}">Cancelar</a>
+        <div class="mb-3">
+        <label for="nombre" class="form-label">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" value="{{ perfil.nombre }}" class="form-control">
+        </div>
+        <div class="mb-3">
+        <label for="email" class="form-label">Email:</label>
+        <input type="email" id="email" name="email" value="{{ perfil.usuario.email }}" class="form-control">
+        </div>
+        <div class="mb-3">
+        <label for="biografia" class="form-label">Biografía:</label>
+        <textarea id="biografia" name="biografia" rows="4" cols="50" class="form-control">{{ perfil.biografia }}</textarea>
+        </div>
+        <input type="submit" value="Guardar Cambios" class="btn btn-primary">
+        <a href="{% url 'perfil' perfil.usuario.pk %} " class="btn btn-secondary">Cancelar</a>
     </form>
 {% endblock %}

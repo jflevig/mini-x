@@ -3,13 +3,14 @@
 {% block title %}Mini-X | Editar Post{% endblock %}
 
 {% block content %}
-
+{% load crispy_forms_tags %}
 <h2>Editar Post</h2>
 
 <form method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Editar</button>
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-primary">Editar</button>
+    <a href="{% url 'detalle_post' post.pk %}" class="btn btn-secondary">Cancelar</a>
 </form>
 
 {% endblock %}

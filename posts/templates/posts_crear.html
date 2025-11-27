@@ -3,13 +3,12 @@
 {% block title %}Mini-X | Crear Post{% endblock %}
 
 {% block content %}
-
+{% load crispy_forms_tags %}
 <h2>Nuevo Post</h2>
 
 <form method="POST">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Publicar</button>
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-primary">Publicar</button>
 </form>
-
 {% endblock %}
