@@ -224,12 +224,6 @@ Para un entorno de producción, considera:
     }
    ```
 
-3. **Seguridad**:
-   - Generar nueva `SECRET_KEY`
-   - Configurar HTTPS
-   - Implementar CSP headers
-
-
 ## 👨‍💻 Autor
 
 **jflevig** - [GitHub](https://github.com/jflevig)
