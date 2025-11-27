@@ -205,6 +205,29 @@ La aplicación estará disponible en: `http://127.0.0.1:8000/`
 - ✅ Moderación de contenido 
 - ✅ Estadísticas de la plataforma
 
+## Configuración de Producción (Render)
+Para un entorno de producción, considera:
+
+1. **Variables de Entorno**: 
+   ```python
+   DEBUG = False
+   ALLOWED_HOSTS = ['.on.render.com']
+   ```
+
+2. **Configuración de la Base de Datos**:
+    ```python
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.environ.get('DATABASE_URL'),
+            conn_max_age=600
+        )
+    }
+   ```
+
+3. **Seguridad**:
+   - Generar nueva `SECRET_KEY`
+   - Configurar HTTPS
+   - Implementar CSP headers
 
 
 ## 👨‍💻 Autor
