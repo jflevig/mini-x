@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/d6b59b8560.js" crossorigin="anonymous"></script>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
     <header>
         <nav class="navbar navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
             <div class="container">
@@ -54,9 +54,17 @@
             </div>
         </nav>
     </header>
-    <main class="container mt-4">
+
+    <main class="container mt-4 flex-grow-1">
         {% block content %}
         {% endblock %}
     </main>
+
+    <footer class="bg-light text-center py-3 mt-5">
+        <p class="mb-1"><strong>Mini-X</strong> — Noviembre 2025</p>
+        <p class="text-muted mb-0">
+            Creado por <strong>Felipe Levi</strong> — Skillnest - Bootcamp FullStack Python
+        </p>
+    </footer>
 </body>
 </html>

@@ -19,7 +19,14 @@
     <div class="p-2">
         
         <!-- Usuario y tiempo -->
-        <p><a href="{% url 'perfil' post.usuario.pk %}" class="link-dark link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover"><strong>@{{ post.usuario.username }}</strong></a> · {{ post.created_at|timesince }}</p>
+         <a href="{% url 'perfil' post.usuario.pk %}" class="link-dark link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">
+            {% if post.usuario.perfil.nombre %}
+            <p><strong>{{ post.usuario.perfil.nombre }}</strong>
+            {% else %}
+            <p><strong>{{ post.usuario.username }}</strong>
+            {% endif %}
+            - <span class="text-secondary"> @{{ post.usuario.username }} · {{ post.created_at|timesince }}</span></p>
+        </a>
 
         <!-- Contenido del post -->
         <a class="link-dark link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'detalle_post' post.pk %}">
