@@ -2,50 +2,73 @@
 {% block title %}Mini-X | Detalle Post{% endblock %}
 
 {% block content %}
-<h1>Detalle del Post</h1>
-<div style="border-bottom:1px solid #ccc; padding:10px;">
-    <a href="{% url 'perfil' post.usuario.pk %}"><p><strong>@{{ post.usuario.username }}</strong></p></a>
-    <p>{{ post.contenido }}</p>
-    <p>{{ post.created_at|date:"H:i d/m/Y" }}</p>
+<!-- Post -->
 
-    <form action="{% url 'like_post_detalle' post.pk %}" method="post">
-        {% csrf_token %}
-        {% if user in post.likes.all %}
-            <button class="btn btn-primary btn-sm" type="submit">
-                ❤️ {{ post.total_likes }}
-            </button>
-        {% else %}
-            <button class="btn btn-light btn-sm" type="submit">
-                ❤️ {{ post.total_likes }}
-            </button>
-        {% endif %}
-    </form>
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+                <a href="{% url 'perfil' post.usuario.pk %}" class="link-dark link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover">
+                {% if post.usuario.perfil.nombre %}
+                <p><strong>{{ post.usuario.perfil.nombre }}</strong>
+                {% else %}
+                <p><strong>{{ post.usuario.username }}</strong>
+                {% endif %}
+                - <span class="text-secondary"> @{{ post.usuario.username }} · {{ post.created_at|timesince }}</span></p>
+            </a>
+            <div>
+                {% if user.is_authenticated and user == post.usuario %}
+                <a href="{% url 'editar_post' post.pk %}" class="btn btn-outline-primary btn-sm">Editar</a>
+                <a href="{% url 'eliminar_post' post.pk %}" class="btn btn-outline-danger btn-sm">Eliminar</a>
+                {% endif %}
+            </div>   
+        </div>
+    
+        <p>{{ post.contenido }}</p>
+
+        <form action="{% url 'like_post_detalle' post.pk %}" method="post">
+            {% csrf_token %}
+            {% if user in post.likes.all %}
+                <button class="btn btn-light btn-sm" type="submit">
+                    <i class="fa-solid fa-heart text-danger"></i> {{ post.total_likes }}
+                </button>
+            {% else %}
+                <button class="btn btn-light btn-sm" type="submit">
+                    <i class="fa-regular fa-heart text-secondary"></i> {{ post.total_likes }}
+                </button>
+            {% endif %}
+        </form>
+    </div>
 </div>
 
-<h3>Comentarios</h3>
+<!-- Formulario Comentario -->
+ 
+<h4 class="mt-4 mb-3">Comentarios</h4>
 
-{% for comentario in comentarios %}
-    <div style="border-bottom:1px solid #ccc; padding:10px;">
-        <a href="{% url 'perfil' comentario.usuario.pk %}"><p><strong>@{{ comentario.usuario.username }}</strong></p></a>
-        <p>{{ comentario.contenido }}</p>
-        <p>{{ comentario.created_at|date:"H:i d/m/Y" }}</p>
-    </div>
-{% empty %}
-    <p>No hay comentarios aún.</p>
-{% endfor %}
-<h3>Agregar Comentario</h3>
 {% if user.is_authenticated %}
 <form method="POST">
     {% csrf_token %}
-    <textarea name="contenido" rows="3" cols="40" required></textarea><br>
-    <button type="submit">Comentar</button>
+    <div class="input-group mb-3">
+        <textarea name="contenido" class="form-control mt-2" placeholder="Deja un comentario aquí" id="floatingTextarea" required></textarea>
+        <button class="btn btn-outline-primary btn-sm mt-2" type="submit" id="button-addon2">Responder</button>
+    </div>
+
 </form>
 {% else %}
 <p>Debes <a href="{% url 'login' %}">iniciar sesión</a> para comentar.</p>
 {% endif %}
 
-{% if user.is_authenticated and user == post.usuario %}
-    <a href="{% url 'editar_post' post.pk %}">Editar</a>
-    <a href="{% url 'eliminar_post' post.pk %}">Eliminar</a>
-{% endif %}
+<!-- Comentarios -->
+ 
+{% for comentario in comentarios %}
+<div class="mb-3 p-3" style="background:#f7f7f7; border-radius: 12px;">
+    <a href="{% url 'perfil' comentario.usuario.pk %}" class="fw-bold text-dark text-decoration-none">
+        @{{ comentario.usuario.username }}
+    </a>
+    <p class="mb-1 mt-2">{{ comentario.contenido }}</p>
+    <small class="text-muted">{{ comentario.created_at|date:"H:i d/m/Y" }}</small>
+</div>
+{% empty %}
+<p class="text-muted">No hay comentarios aún.</p>
+{% endfor %}
+
 {% endblock %}

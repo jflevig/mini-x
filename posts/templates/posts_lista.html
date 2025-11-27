@@ -5,35 +5,47 @@
 {% block content %}
 
 {% if user.is_authenticated %}
-<a href="{% url 'crear_post' %}" class="btn btn-primary">+ Crear Post</a>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="m-0">Posts</h4>
+    <a href="{% url 'crear_post' %}" class="btn btn-outline-primary btn-sm">
+        <i class="fa-solid fa-plus me-1"></i> Nuevo
+    </a>
+</div>
 {% endif %}
 
+<ul class="list-group">
 {% for post in posts %}
-    <div style="border-bottom:1px solid #ccc; padding:10px;">
-        <p><a href="{% url 'perfil' post.usuario.pk %}"><strong>@{{ post.usuario.username }}</strong></a></p>
-        <a href="{% url 'detalle_post' post.pk %}">
-            <p>{{ post.contenido }}</p>
-            <p>{{ post.created_at|date:"H:i d/m/Y" }}</p>
+<li class="list-group-item">
+    <div class="p-2">
+        <!-- Usuario y tiempo -->
+        <p><a href="{% url 'perfil' post.usuario.pk %}" class="link-dark link-offset-2 link-underline-opacity-0 link-underline-opacity-100-hover"><strong>@{{ post.usuario.username }}</strong></a> · {{ post.created_at|timesince }}</p>
+
+        <!-- Contenido del post -->
+        <a class="link-dark link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="{% url 'detalle_post' post.pk %}">
+            <div><p>{{ post.contenido }}</p></div>
         </a>
+
+        <!-- Botones de like y comentarios -->
         <form action="{% url 'like_post_home' post.pk %}" method="post">
             {% csrf_token %}
             {% if user in post.likes.all %}
-                <button class="btn btn-primary btn-sm" type="submit">
-                    ❤️ {{ post.total_likes }}
+                <button class="btn btn-light btn-sm" type="submit">
+                    <i class="fa-solid fa-heart text-danger"></i> {{ post.total_likes }}
                 </button>
                 <a href="{% url 'detalle_post' post.pk %}" class="btn btn-light btn-sm">
-                    💬 {{ post.total_comentarios }}
+                    <i class="fa-regular fa-comment"></i> {{ post.total_comentarios }}
                 </a>
             {% else %}
                 <button class="btn btn-light btn-sm" type="submit">
-                    ❤️ {{ post.total_likes }}
+                    <i class="fa-regular fa-heart text-secondary"></i> {{ post.total_likes }}
                 </button>
                 <a href="{% url 'detalle_post' post.pk %}" class="btn btn-light btn-sm">
-                    💬 {{ post.total_comentarios }}
+                    <i class="fa-regular fa-comment"></i> {{ post.total_comentarios }}
                 </a>
             {% endif %}
         </form>
     </div>
+</li>
 {% endfor %}
-
+</ul>
 {% endblock %}

@@ -51,8 +51,10 @@ def editar_perfil(request):
     perfil = Perfil.objects.get(usuario=request.user)
 
     if request.method == 'POST':
+        nombre = request.POST.get('nombre', '')
         biografia = request.POST.get('biografia', '')
         email = request.POST.get('email', '')
+        perfil.nombre = nombre
         perfil.biografia = biografia
         perfil.save()
         perfil.usuario.email = email
