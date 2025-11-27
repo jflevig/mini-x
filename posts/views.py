@@ -20,7 +20,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('home')
 
     def form_valid(self, form):
-        form.instance.usuario = self.request.user
+        form.instance.usuario = self.request.user # Asigna automaticamente el usuario autenticado
         return super().form_valid(form)
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -29,9 +29,10 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     template_name = 'posts_editar.html'
     success_url = reverse_lazy('home')
 
+    # Solo el autor del post puede editarlo
     def test_func(self):
         post = self.get_object()
-        return self.request.user == post.usuario
+        return self.request.user == post.usuario 
     
     def handle_no_permission(self): #403: Forbidden
         #redirect pagina sin permisos
@@ -42,6 +43,7 @@ class PostDeleteView(DeleteView):
     template_name = 'posts_eliminar.html'
     success_url = reverse_lazy('home')
 
+    #Solo el autor del post puede eliminarlo
     def test_func(self):
         post = self.get_object()
         return self.request.user == post.usuario
@@ -55,12 +57,14 @@ class PostDetailView(DetailView):
     template_name = 'posts_detalle.html'
     context_object_name = 'post'
 
+    # Agrega comentarios y formulario al contexto para visualizarlas en la plantilla
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['comentarios'] = Comentario.objects.filter(post=self.object).order_by('-created_at')
         context['form'] = ComentarioForm()
         return context
     
+    # Maneja la creación de comentarios
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         form = ComentarioForm(request.POST)
@@ -75,6 +79,9 @@ class PostDetailView(DetailView):
         return self.render_to_response(context)
 
 
+# Vistas para gestionar likes en posts desde diferentes vistas (cambia la redirección hacia la misma página de donde se dio like)
+
+# Likes realizados desde la vista de lista de posts (home)
 @login_required
 def like_post_home(request, post_id):
     post = Post.objects.get(id=post_id)
@@ -86,6 +93,7 @@ def like_post_home(request, post_id):
 
     return redirect('home')
 
+# Likes realizados desde la vista de detalle de posts
 @login_required
 def like_post_detalle(request, post_id):
     post = Post.objects.get(id=post_id)
@@ -97,6 +105,7 @@ def like_post_detalle(request, post_id):
 
     return redirect(reverse_lazy('detalle_post', kwargs={'pk': post.id}))
 
+# Likes realizados desde la vista de perfil de usuario
 @login_required
 def like_post_perfil(request, post_id):
     post = Post.objects.get(id=post_id)

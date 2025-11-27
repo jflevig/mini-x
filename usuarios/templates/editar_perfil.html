@@ -6,18 +6,22 @@
     <h2>Editar Perfil de {{ perfil.usuario.username }}</h2>
     <form method="POST">
         {% csrf_token %}
+        
         <div class="mb-3">
         <label for="nombre" class="form-label">Nombre:</label>
         <input type="text" id="nombre" name="nombre" value="{{ perfil.nombre }}" class="form-control">
         </div>
+        
         <div class="mb-3">
         <label for="email" class="form-label">Email:</label>
         <input type="email" id="email" name="email" value="{{ perfil.usuario.email }}" class="form-control">
         </div>
+       
         <div class="mb-3">
         <label for="biografia" class="form-label">Biografía:</label>
         <textarea id="biografia" name="biografia" rows="4" cols="50" class="form-control">{{ perfil.biografia }}</textarea>
         </div>
+       
         <input type="submit" value="Guardar Cambios" class="btn btn-primary">
         <a href="{% url 'perfil' perfil.usuario.pk %} " class="btn btn-secondary">Cancelar</a>
     </form>
