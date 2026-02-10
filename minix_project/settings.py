@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-wkr9a4($v*#o+202o(y1v+@qj-6yaze^bga&hf1o*(^f)8o$8=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['.onrender.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -90,10 +90,7 @@ WSGI_APPLICATION = 'minix_project.wsgi.application'
 # }
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
-        conn_max_age=600
-    )
+    'default': dj_database_url.config(conn_max_age=600)
 }
 
 # Password validation
